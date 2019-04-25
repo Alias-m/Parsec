@@ -1,5 +1,5 @@
-#ifndef UNPACKER_H
-#define UNPACKER_H
+#ifndef PARSEC_UNPACKER_H
+#define PARSEC_UNPACKER_H
 #include <functional>
 #include "streams/package/Elementable.hpp"
 
@@ -8,8 +8,7 @@ class Unpacker
 {
     public:
         T* parse(ElementObject* e) {
-            K type;
-            //e->getItem(keyword.c_str(), &type);
+            K type = e->val<TemplateElement<K>>(keyword.c_str())->get();
             return types.find(type) != types.end() ? types[type]() : nullptr;
         }
 
@@ -25,4 +24,4 @@ class Unpacker
         std::map<K, std::function<T*()> > types;
         std::string keyword;
 };
-#endif // COMPONENT_H
+#endif // PARSEC_UNPACKER_H

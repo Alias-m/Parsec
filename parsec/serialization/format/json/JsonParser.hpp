@@ -28,7 +28,7 @@ public:
 	void read(ElementObject* e) override;
 
 private:
-	std::map<const char, std::function<Element*()>> elements;
+	std::map<const char, std::function<Element*()>> __elements;
 	std::string __text;
 };
 #endif //JSON_PARSER_H

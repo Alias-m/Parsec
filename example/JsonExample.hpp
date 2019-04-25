@@ -12,17 +12,17 @@ class JsonExample : public Elementable, public Initializer<ElementObject>, publi
 public:
     Element* toElement() const override {
         auto o =  new ElementObject;
-        o->put("value", new ElementInt(42));
+        PARSEC_PUT_INT(o, "value", 42)
+        return o;
     }
 
     void fromElement(ElementObject* o, const Serializer* s, const std::string& encoding) override {
-        auto test = o->val<ElementInt>("value")->get();
-        auto test2 = o->get();
+        auto test = PARSEC_FIND_INT(o, "value")
+        auto test2 = test->get();
     }
 
     void fromElement(ElementArray* o, const Serializer* s, const std::string& encoding) override {
-        auto test = o->val<ElementInt>(0)->get();
-        auto test2 = o->get();
+        auto test = PARSEC_GET_OBJECT(o, 0)
     }
 
     void fromElement(ElementInt* o, const Serializer*, const std::string&) override {

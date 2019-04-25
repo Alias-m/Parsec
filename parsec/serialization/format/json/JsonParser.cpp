@@ -10,11 +10,11 @@
 
 JsonParser::JsonParser()
 {
-    elements['{'] = []() -> Element*{return new ElementObject();};
-    elements['['] = []() -> Element*{return new ElementArray();};
-    elements['\"'] = []() -> Element*{return new ElementString();};
-    elements['t'] = []() -> Element*{return new ElementBoolean();};
-    elements['f'] = []() -> Element*{return new ElementBoolean();};
+    __elements['{'] = []() -> Element*{return new ElementObject();};
+    __elements['['] = []() -> Element*{return new ElementArray();};
+    __elements['\"'] = []() -> Element*{return new ElementString();};
+    __elements['t'] = []() -> Element*{return new ElementBoolean();};
+    __elements['f'] = []() -> Element*{return new ElementBoolean();};
 }
 
 void jump(std::string& text) {
@@ -40,8 +40,8 @@ Element* JsonParser::parse() {
     Element* e = nullptr;
     jump(__text);
     char first = __text[0];
-    auto it = elements.find(first);
-    if(it == elements.end()){
+    auto it = __elements.find(first);
+    if(it == __elements.end()){
         for(i = 0; __text[i] < 0x3A && __text[i] > 0x2F ; i++);
         if(__text[i] == '.')
             e = new ElementDouble();

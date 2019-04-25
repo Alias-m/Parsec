@@ -38,7 +38,7 @@ void JsonCreator::write(ElementDouble *e) {
 }
 
 void JsonCreator::write(ElementBoolean *e) {
-    __text.append(to_string(e->get() ? "true" : "false"));
+    __text.append(e->get() ? "true" : "false");
 }
 
 void JsonCreator::write(ElementArray *e) {
