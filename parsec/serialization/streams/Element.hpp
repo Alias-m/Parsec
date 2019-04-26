@@ -6,6 +6,7 @@
 #include "writer/Writer.hpp"
 #include "../../utils/Factory.hpp"
 #include "../exceptions/TypeMismatchException.hpp"
+#include "../exceptions/NotSupportedElementException.hpp"
 #include "../exceptions/ElementMismatchException.hpp"
 #include <map>
 #include <typeinfo>
@@ -14,8 +15,8 @@
 
 #define CONSTRUCTOR(label, primitive) label() {}  \
                                       explicit label(const primitive& value): TemplateElement<primitive>(value) {}
-#define READER inline void read(ContentParser* parser) override { dynamic_cast<Reader<decltype(this)>*>(parser)->read(this); }
-#define WRITER inline void write(ContentCreator* creator) override {  dynamic_cast<Writer<decltype(this)>*>(creator)->write(this); }
+#define READER inline void read(ContentParser* parser) override { auto p = dynamic_cast<Reader<decltype(this)>*>(parser); if(p) p->read(this); else throw NotSupportedElementException("parser"); }
+#define WRITER inline void write(ContentCreator* creator) override {  auto c = dynamic_cast<Writer<decltype(this)>*>(creator); if(c) c->write(this); else throw NotSupportedElementException("writer"); }
 #define PARSEC_ELEMENT READER WRITER
 #define PARSEC_PRIMITIVE(label, primitive) class label : public TemplateElement<primitive> { public: CONSTRUCTOR(label, primitive) PARSEC_ELEMENT };  // NOLINT misc-macro-parentheses
 #define PARSEC_ATTRIBUTES(type) public: inline void set(type value) { __value = value; } \
