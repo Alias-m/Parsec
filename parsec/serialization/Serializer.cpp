@@ -1,7 +1,7 @@
 #include "Serializer.hpp"
 
 Element* Serializer::getElement(const std::string& file_name, const std::string key) const{
-    return parsers.get(key)()->read(file_name);
+    return __parsers.get(key)()->read(file_name);
 }
 
 std::string Serializer::serialize(const Elementable* component, const std::string& key, const std::string& file_name) const{
@@ -12,14 +12,14 @@ std::string Serializer::serialize(const Elementable* component, const std::strin
 }
 
 std::string Serializer::serialize(Element* element, const std::string& key, const std::string& file_name) const{
-    std::string parsed(creators.get(key)()->write(element, file_name));
+    std::string parsed(__creators.get(key)()->write(element, file_name));
     return parsed;
 }
 
 Serializer::Serializer() = default;
 
 Serializer::~Serializer(){
-    creators.clear();
-    parsers.clear();
+    __creators.clear();
+    __parsers.clear();
 }
 

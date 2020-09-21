@@ -76,19 +76,19 @@ public:
 
     template<typename T, typename = std::enable_if<std::is_base_of<ContentCreator, T>::value>>
     void addSerializer() {
-        creators.put(T::encoding(), []() -> ContentCreator*{return new T();});
+        __creators.put(T::encoding(), []() -> ContentCreator*{return new T();});
     }
 
     template<typename T, typename = std::enable_if<std::is_base_of<ContentParser, T>::value>>
     void addDeserializer() {
-        parsers.put(T::encoding(), []() -> ContentParser*{return new T();});
+        __parsers.put(T::encoding(), []() -> ContentParser*{return new T();});
     }
 
 protected:
 
-    Factory<std::function<ContentCreator*()>> creators;
+    Factory<std::function<ContentCreator*()>> __creators;
 
-    Factory<std::function<ContentParser*()>> parsers;
+    Factory<std::function<ContentParser*()>> __parsers;
 };
 
 #endif
